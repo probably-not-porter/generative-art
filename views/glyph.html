@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>ＧＬＹＰＨ</title>
+        <link rel="shortcut icon" type="image/jpg" href="../favicon.png"/>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <style>
+            html{
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                background-color: black;
+            }
+            canvas {
+                padding: 0;
+                margin: auto;
+                display: block;
+                width: 800px;
+                height: 600px;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
+            #reload{
+                position: absolute;
+                left: 20px;
+                bottom: 20px;
+                cursor: pointer;
+                transition: all 0.4s ease-in-out;
+            }
+            #reload:hover{
+                transform: rotate(20deg) scale(1.1);
+            }
+        </style>
+    </head>
+    <body>
+        <div id="reload" onclick="location.reload();"><img class="icon" src="https://htmlacademy.ru/assets/icons/reload-6x-white.png"></div>
+        <script src="../p5/p5.min.js"></script>
+        <script>
+            // Settings
+            let CANVAS_WIDTH = 800;
+            let CANVAS_HEIGHT = 800;
+            let LINES = 28;
+            let FONT_COLOR = 'black';
+
+            let BACKGROUND_COLOR = 'white';
+
+
+            // Algorithm
+            function setup() {
+                createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+                background(color(BACKGROUND_COLOR));
+                stroke(FONT_COLOR);
+                
+                noFill();
+                for (x = 1; x < LINES; x++){
+                    let l = getRandomInt(1, CANVAS_WIDTH / 20);
+                    strokeWeight(Math.random() / 2 + 0.25);
+                    if (getRandomInt(1, 10) > 2){
+                        line(20 , 30 * x, l*20, 30 * x);
+                        for (y = 1; y < l + 1; y++){
+                            let char_seed = getRandomInt(1, 10);
+
+                            if (char_seed == 2){ // circle
+                                ellipse(y*20,x*30,10);
+                            }
+                            else if (char_seed == 3){ // derivative symbol
+                                line(y*20, x*30 - 10, y*20, x*30 + 10);
+                                line(y*20, x*30 + 10, y*20-3, x*30 + 7);
+                                line(y*20, x*30 - 10,y*20 + 3, x*30 - 7);
+                            }
+                            else if (char_seed == 4){ // three lines up
+                                line(y*20, x*30 - 5, y*20-1, x*30)
+                                line(y*20 + 5, x*30 - 7, y*20 + 4, x*30)
+                                line(y*20 + 10, x*30 - 5, y*20 + 9, x*30)
+                            }
+                            else if (char_seed == 5){ // three lines down
+                                line(y*20, x*30 + 5, y*20-1, x*30)
+                                line(y*20 + 5, x*30 + 5, y*20 + 4, x*30)
+                                line(y*20 + 10, x*30 + 8, y*20 + 9, x*30)
+                                line(y*20 + 10, x*30 + 8,y*20 + 4, x*30 + 8)
+                            }
+                            else if (char_seed == 6){ // greater than
+                                line(y*20,x*30,y*20 - 10,x*30 - 4)
+                                line(y*20,x*30,y*20 - 10,x*30 + 4)
+                            }
+                            else if (char_seed == 7){ // backslash
+                                line(y*20 - 7,x*30 - 5,y*20 + 7,x*30 + 5)
+                            }
+                        }
+                    }
+                    
+                }
+            }
+
+            function getRandomInt(min, max) {
+                min = Math.ceil(min);
+                max = Math.floor(max);
+                return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+            }
+        </script>
+    </body>
+</html>

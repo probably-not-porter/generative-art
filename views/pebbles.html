@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>ＰＥＢＢＬＥＳ</title>
+        <link rel="shortcut icon" type="image/jpg" href="../favicon.png"/>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <style>
+            html{
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                background-color: black;
+            }
+            canvas {
+                padding: 0;
+                margin: auto;
+                display: block;
+                width: 800px;
+                height: 600px;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
+            #reload{
+                position: absolute;
+                left: 20px;
+                bottom: 20px;
+                cursor: pointer;
+                transition: all 0.4s ease-in-out;
+            }
+            #reload:hover{
+                transform: rotate(20deg) scale(1.1);
+            }
+        </style>
+    </head>
+    <body>
+        <div id="reload" onclick="location.reload();"><img class="icon" src="https://htmlacademy.ru/assets/icons/reload-6x-white.png"></div>
+        <script src="../p5/p5.min.js"></script>
+        <script>
+            // Settings
+            let CANVAS_WIDTH = 600;
+            let CANVAS_HEIGHT = 400;
+
+            let PARTICLESIZE = 25;
+            let NUM_PARTICLES = 10000;
+            let NOISESCALE = 1.5;
+            let PERSPECTIVE_MOD = 500;
+
+            let BACKGROUND_COLOR = 'black';
+            let BORDER_COLOR = 'white';
+
+
+            // Algorithm
+            function setup() {
+                createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+                background(color(BACKGROUND_COLOR));
+
+                let r = getRandomInt(1,200);
+                let g = getRandomInt(1,200);
+                let b = getRandomInt(1,200);
+
+                for (j = 0; j < NUM_PARTICLES; j++){                    
+                    let x = getRandomInt(1,CANVAS_WIDTH);
+                    let y = getRandomInt(1,CANVAS_HEIGHT);
+                    let d = (noise(x, y,) * NOISESCALE) * PARTICLESIZE;
+                    let p =  CANVAS_HEIGHT;
+                    noStroke();
+
+                    fill(color(noise(x) * (r), noise(x) * (g), noise(x) * (b)));
+                    variableEllipse(x - 4, y + 4, d, d * (y/PERSPECTIVE_MOD));
+
+                    fill(color(noise(x) * (r + 20), noise(x) * (g + 20), noise(x) * (b + 20)));
+                    variableEllipse(x - 2, y + 2, d, d * (y/PERSPECTIVE_MOD));
+
+                    fill(color(noise(x) * (r + 40), noise(x) * (g + 40), noise(x) * (b + 40)));
+                    variableEllipse(x, y, d, d * (y/PERSPECTIVE_MOD));
+                }
+                strokeWeight(20);
+                stroke(BORDER_COLOR);
+                noFill();
+                rect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            }
+
+            function variableEllipse(x, y, px, py) {
+                ellipse(x, y, px, py);
+            }
+
+            function getRandomInt(min, max) {
+                min = Math.ceil(min);
+                max = Math.floor(max);
+                return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+            }
+        </script>
+    </body>
+</html>
