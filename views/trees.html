@@ -127,7 +127,7 @@
                     
                     if (current_node != null){
                         row = row.concat(current_node.children);
-                        strokeWeight(LINE_WEIGHT - (current_node.depth  - 1) * 2);
+                        strokeWeight((LINE_WEIGHT - current_node.depth) * 2);
                         let c = color(LINE_COLOR)
                         c.setAlpha(255 / current_node.depth + 1);
                         stroke(c);
