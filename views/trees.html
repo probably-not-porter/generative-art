@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>ＴＲＥＥＳ</title>
+        <link rel="shortcut icon" type="image/jpg" href="../favicon.png"/>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <style>
+            html{
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                background-color: black;
+            }
+            canvas {
+                padding: 0;
+                margin: auto;
+                display: block;
+                width: 800px;
+                height: 600px;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
+            #reload{
+                position: absolute;
+                left: 20px;
+                bottom: 20px;
+                cursor: pointer;
+                transition: all 0.4s ease-in-out;
+            }
+            #reload:hover{
+                transform: rotate(20deg) scale(1.1);
+            }
+        </style>
+    </head>
+    <body>
+        <div id="reload" onclick="location.reload();"><img class="icon" src="https://htmlacademy.ru/assets/icons/reload-6x-white.png"></div>
+        <script src="../p5/p5.min.js"></script>
+        <script>
+            // Settings
+            let CANVAS_WIDTH = 800;
+            let CANVAS_HEIGHT = 800;
+            let BACKGROUND_COLOR = 'black';
+
+            let START_X = 400;
+            let START_Y = 800;
+            let MAX_PROPOGATES = 2;
+            let MIN_PROPOGATES = 2;
+            let MAX_ANGLE = 150; // degree
+            let MIN_ANGLE = 50; // degree
+            let LENGTH_DECAY = 90; //percentage
+            let LENGTH_VARIANCE = 20; // percentage
+            let GROWTH_DEPTH = 9; //iterations
+
+            let START_LENGTH = 120;
+            let LINE_WEIGHT = 7;
+
+            let LINE_COLOR = 'white';
+            
+
+            class PlantNode {
+                constructor(angle, length, depth, parent, x1, y1) {
+                    this.children = [];
+                    this.parent = parent;
+                    this.depth = depth;
+                    this.angle = angle;
+                    this.length = length;
+                    this.x1 = x1;
+                    this.y1 = y1;
+                    this.x2 = this.x1 + (Math.cos(toRadians(this.angle)) * this.length);
+                    this.y2 = this.y1 + (Math.sin(toRadians(this.angle * -1)) * this.length);
+                }
+
+                grow(){ // Create Nodes
+                    let p = getRandomInt(MIN_PROPOGATES, MAX_PROPOGATES + 1);
+
+                    for (let m = 0; m < p; m++){
+                        let a = getRandomInt(MIN_ANGLE - m*10, MAX_ANGLE - m*10);
+                        let l = ((this.length / 1.2) * (LENGTH_DECAY / 100)) * ((getRandomInt(-1 * LENGTH_VARIANCE, LENGTH_VARIANCE) / 100) + 1);
+                        this.children.push( new PlantNode(a, l, this.depth + 1, this, this.x2, this.y2));
+                    }
+                }
+
+                get_children(){ // Return Node List
+                    return this.children;
+                }
+            }
+
+            // Algorithm
+            function setup() {
+                
+                let p = new PlantNode(angle = 90, length = START_LENGTH, depth = 0, parent = null, START_X, START_Y);
+                let row = [p];
+
+                for( j = 0; j < GROWTH_DEPTH; j++){
+                    console.log(row)
+                    let new_row = [];
+
+                    for (k = 0; k < row.length; k++){
+                        let node = row[k];
+                        node.grow();
+                        new_nodes = node.get_children();
+                        new_row = new_row.concat(new_nodes);
+                    }
+                    row = new_row;
+                }
+                
+                // background
+                createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+                background(color(BACKGROUND_COLOR));
+                
+
+                
+
+                let children = p.children;
+                row = [p];
+                while (children.length > 0){
+                    let current_node = row.pop();
+                    
+                    if (current_node != null){
+                        row = row.concat(current_node.children);
+                        strokeWeight(LINE_WEIGHT - (current_node.depth  - 1) * 2);
+                        let c = color(LINE_COLOR)
+                        c.setAlpha(255 / current_node.depth + 1);
+                        stroke(c);
+                        
+                        line(current_node.x1, current_node.y1, current_node.x2, current_node.y2);
+                    }
+                    else{
+                        break;
+                    }
+                }
+
+            }
+
+            function getRandomInt(min, max) {
+                min = Math.ceil(min);
+                max = Math.floor(max);
+                return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+            }
+
+            function toRadians (angle) {
+                return angle * (Math.PI / 180);
+            }
+        </script>
+    </body>
+</html>
