@@ -48,22 +48,22 @@
             // Settings
             let CANVAS_WIDTH = 800;
             let CANVAS_HEIGHT = 800;
-            let BACKGROUND_COLOR = 'black';
+            let BACKGROUND_COLOR = 'white';
 
             let START_X = 400;
             let START_Y = 800;
             let MAX_PROPOGATES = 2;
-            let MIN_PROPOGATES = 2;
+            let MIN_PROPOGATES = 3;
             let MAX_ANGLE = 150; // degree
             let MIN_ANGLE = 50; // degree
             let LENGTH_DECAY = 90; //percentage
             let LENGTH_VARIANCE = 20; // percentage
             let GROWTH_DEPTH = 9; //iterations
 
-            let START_LENGTH = 120;
+            let START_LENGTH = 200;
             let LINE_WEIGHT = 7;
 
-            let LINE_COLOR = 'white';
+            let LINE_COLOR = 'black';
             
 
             class PlantNode {
@@ -97,7 +97,7 @@
             // Algorithm
             function setup() {
                 
-                let p = new PlantNode(angle = 90, length = START_LENGTH, depth = 0, parent = null, START_X, START_Y);
+                let p = new PlantNode(angle = getRandomInt(70, 110), length = getRandomInt(START_LENGTH - 10, START_LENGTH + 10), depth = 0, parent = null, START_X, START_Y);
                 let row = [p];
 
                 for( j = 0; j < GROWTH_DEPTH; j++){
