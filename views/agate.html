@@ -36,13 +36,26 @@
                 cursor: pointer;
                 transition: all 0.4s ease-in-out;
             }
-            #reload:hover{
-                transform: rotate(20deg) scale(1.1);
+            #home{
+                position: absolute;
+                left: 20px;
+                bottom: 100px;
+                cursor: pointer;
+                transition: all 0.4s ease-in-out;
             }
+            #home:hover{
+                transform: scale(1.3);
+            }
+            #reload:hover{
+                transform: rotate(20deg);
+            }
+
         </style>
     </head>
     <body>
-        <div id="reload" onclick="location.reload();"><img class="icon" src="https://htmlacademy.ru/assets/icons/reload-6x-white.png"></div>
+        <div id="reload" onclick="location.reload();"><img class="icon" width='64px' height='64px' src="../img/reload.png"></div>
+        <div id="home" onclick="window.location.href = 'https://www.genart.centrarchidae.net/';"><img class="icon" width='64px' height='64px' src="../img/home.png"></div>
+
         <script src="../p5/p5.min.js"></script>
         <script>
             // Settings
