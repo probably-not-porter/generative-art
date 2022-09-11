@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>ＡＧＡＴＥ</title>
+        <link rel="shortcut icon" type="image/jpg" href="../favicon.png"/>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <style>
+            html{
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                background-color: black;
+            }
+            canvas {
+                padding: 0;
+                margin: auto;
+                display: block;
+                width: 800px;
+                height: 600px;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
+            #reload{
+                position: absolute;
+                left: 20px;
+                bottom: 20px;
+                cursor: pointer;
+                transition: all 0.4s ease-in-out;
+            }
+            #reload:hover{
+                transform: rotate(20deg) scale(1.1);
+            }
+        </style>
+    </head>
+    <body>
+        <div id="reload" onclick="location.reload();"><img class="icon" src="https://htmlacademy.ru/assets/icons/reload-6x-white.png"></div>
+        <script src="../p5/p5.min.js"></script>
+        <script>
+            // Settings
+            let CANVAS_WIDTH = 800;
+            let CANVAS_HEIGHT = 800;
+
+            let BACKGROUND_COLOR = 'black';
+            let BLOCK_SIZE = 2;
+            let NOISE_SCALE = 0.004;
+            let COLOR_BANDS = 200;
+
+
+            // Algorithm
+            async function setup() {
+                await main();
+            }
+            async function main(){
+                createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+                background(color(BACKGROUND_COLOR));
+                noStroke();
+
+                r = getRandomInt(50, 200);
+                g = getRandomInt(50, 200);
+                b = getRandomInt(50, 200);
+                color_map = [];
+                for (j = 0; j < COLOR_BANDS; j++){
+                    color_map.push([
+                        r + getRandomInt(-50, 50),
+                        g + getRandomInt(-50, 50),
+                        b + getRandomInt(-50, 50)
+                    ])
+                }
+
+
+                for (x = 0; x < CANVAS_WIDTH / BLOCK_SIZE; x++){
+
+                    for (y = 0; y < CANVAS_HEIGHT / BLOCK_SIZE; y++){
+                        //console.log(x,y);
+                        let seed = noise(x * NOISE_SCALE,y * NOISE_SCALE);
+                        //console.log(seed);
+                        console.log(Math.floor(seed * color_map.length));
+
+                        let c = color_map[ Math.floor(seed * color_map.length)];
+                        //console.log(c)
+
+                        fill(color(c[0],c[1],c[2]));
+                        rect(x*BLOCK_SIZE, y*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                    }
+                }
+
+                strokeWeight(20);
+                stroke(color(color_map[0][0], color_map[0][1], color_map[0][2]));
+                noFill();
+                rect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            }
+
+            function getRandomInt(min, max) {
+                min = Math.ceil(min);
+                max = Math.floor(max);
+                return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+            }
+        </script>
+    </body>
+</html>
