@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>ＡＲＣＨＩＰＥＬＡＧＯ</title>
+        <link rel="shortcut icon" type="image/jpg" href="../favicon.png"/>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../css/template.css">
+    </head>
+    <body>
+        <div id="reload" onclick="location.reload();"><img alt='reload' class="icon" width='64px' height='64px' src="../img/reload.png"></div>
+        <div id="home" onclick="window.location.href = 'https://www.genart.centrarchidae.net/';"><img alt='home' class="icon" width='64px' height='64px' src="../img/home.png"></div>
+        <div class="loader"></div>
+        <script src="../p5/p5.min.js"></script>
+        
+        <script>
+            // Settings
+            let CANVAS_WIDTH = 800;
+            let CANVAS_HEIGHT = 800;
+
+            let BACKGROUND_COLOR = 'black';
+            let BLOCK_SIZE = 1;
+            let NOISE_SCALE = 0.01;
+            let COLOR_BANDS = 200;
+
+
+            // Algorithm
+            async function setup() {
+                await main();
+            }
+            async function main(){
+                createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+                background(color(BACKGROUND_COLOR));
+                noStroke();
+
+                color_map = [
+                    [255, 240, 255], // snow
+                    [255, 240, 255], // snow
+                    [255, 240, 255], // snow
+                    [255, 240, 255], // snow
+                    [122, 130, 126], // gray
+                    [122, 130, 126], // gray
+                    [122, 130, 126], // gray
+                    [122, 130, 126], // gray
+                    [122, 130, 126], // gray
+                    [122, 130, 126], // gray
+                    [48, 107, 52], //dark green
+                    [48, 107, 52], //dark green
+                    [48, 107, 52], //dark green
+                    [48, 107, 52], //dark green
+                    [48, 107, 52], //dark green
+                    [48, 107, 52], //dark green
+                    [48, 107, 52], //dark green
+                    [62, 133, 67], // med dark green
+                    [62, 133, 67], // med dark green
+                    [62, 133, 67], // med dark green
+                    [62, 133, 67], // med dark green
+                    [56, 166, 64], //med light green
+                    [56, 166, 64], //med light green
+                    [56, 166, 64], //med light green
+                    [87, 181, 94], //light green
+                    [237, 236, 173], // light sand
+                    [212, 210, 125], //sand
+                    [179, 177, 111], // dark sand
+                    [43, 116, 194], // light blue
+                    [43, 116, 194], // light blue
+                    [43, 116, 194], // light blue
+                    [43, 116, 194], // light blue
+                    [43, 116, 194], // light blue
+                    [23, 81, 143], //med light blue
+                    [23, 81, 143], //med light blue
+                    [23, 81, 143], //med light blue
+                    [23, 81, 143], //med light blue
+                    [23, 81, 143], //med light blue
+                    [23, 81, 143], //med light blue
+                    [23, 81, 143], //med light blue
+                    [23, 81, 143], //med light blue
+                    [35, 31, 171], //med dark blue
+                    [35, 31, 171], //med dark blue
+                    [35, 31, 171], //med dark blue
+                    [35, 31, 171], //med dark blue
+                    [35, 31, 171], //med dark blue
+                    [35, 31, 171], //med dark blue
+                    [35, 31, 171], //med dark blue
+                    [35, 31, 171], //med dark blue
+                    [35, 31, 171], //med dark blue
+                    [35, 31, 171], //med dark blue
+                    [35, 31, 171], //med dark blue
+                    [35, 14, 140], // dark blue
+                    [35, 14, 140], // dark blue
+                    [35, 14, 140], // dark blue
+                    [35, 14, 140], // dark blue
+                    [35, 14, 140], // dark blue
+                    [35, 14, 140], // dark blue
+                    [35, 14, 140], // dark blue
+                    [35, 14, 140], // dark blue
+                    [35, 14, 140], // dark blue
+                    [35, 14, 140], // dark blue
+                    [35, 14, 140], // dark blue
+                    [35, 14, 140], // dark blue
+                    [35, 14, 140], // dark blue
+                    [35, 14, 140], // dark blue
+                    [35, 14, 140], // dark blue
+                ];
+
+
+                for (x = 0; x < CANVAS_WIDTH / BLOCK_SIZE; x++){
+
+                    for (y = 0; y < CANVAS_HEIGHT / BLOCK_SIZE; y++){
+                        //console.log(x,y);
+                        let seed = noise(x * NOISE_SCALE,y * NOISE_SCALE);
+                        //console.log(seed);
+                        //console.log(Math.floor(seed * color_map.length));
+
+                        let c = color_map[ Math.floor(seed * color_map.length)];
+
+                        fill(color(c[0],c[1],c[2]));
+                        rect(x*BLOCK_SIZE, y*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                    }
+                }
+
+                strokeWeight(20);
+                stroke(color('white'));
+                noFill();
+                rect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            }
+
+            function getRandomInt(min, max) {
+                min = Math.ceil(min);
+                max = Math.floor(max);
+                return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>ＳＴＡＣＫＳ</title>
+        <link rel="shortcut icon" type="image/jpg" href="../favicon.png"/>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../css/template.css">
+    </head>
+    <body>
+        <div id="reload" onclick="location.reload();"><img alt='reload' class="icon" width='64px' height='64px' src="../img/reload.png"></div>
+        <div id="home" onclick="window.location.href = 'https://www.genart.centrarchidae.net/';"><img alt='home' class="icon" width='64px' height='64px' src="../img/home.png"></div>
+        <div class="loader"></div>
+        <script src="../p5/p5.min.js"></script>
+        
+        <script>
+            // Settings
+            let CANVAS_WIDTH = 800;
+            let CANVAS_HEIGHT = 800;
+
+            let BACKGROUND_COLOR = 'black';
+            let BLOCK_SIZE = 2;
+            let NOISE_SCALE = 0.004;
+            let COLOR_BANDS = 200;
+            let DENSITY = 4;
+            let START = 10;
+            let STARTRAD = 600;
+            let LAYERS = 200;
+
+            // Struct
+            class Node {
+                constructor(x, y, width, d, r, b, g) {
+                    this.x = x;
+                    this.y = y;
+                    this.d = d
+                    this.height = width / 3;
+                    this.width = width;
+                    this.children = [];
+
+                    this.r = r;
+                    this.b = b;
+                    this.g = g;
+                }
+                CreateChildren(){
+                    let seed = getRandomInt(1, 100);
+                    let shift = getRandomInt(0, 11) - 5;
+                    let new_r = this.r + getRandomInt(-10,10);
+                    let new_b = this.b + getRandomInt(-10,10);
+                    let new_g = this.g + getRandomInt(-10,10);
+                    if (seed < 96){
+                        let newnode = new Node(
+                            this.x + shift,
+                            this.y - DENSITY,
+                            this.width - getRandomInt(0,1),
+                            this.d + 1,
+                            new_r,
+                            new_b,
+                            new_g
+                        );
+                        this.children.push(newnode)
+                    }else{
+                        
+                        let leftnode = new Node(
+                            this.x + shift + (this.width / 4),
+                            this.y - DENSITY,
+                            this.width / 1.8 - getRandomInt(0,1),
+                            this.d + 1,
+                            new_r,
+                            new_b,
+                            new_g
+                        )
+                        let rightnode = new Node(
+                            this.x - shift - (this.width / 4),
+                            this.y - DENSITY,
+                            this.width / 1.8 - getRandomInt(0,1),
+                            this.d + 1,
+                            new_r,
+                            new_b,
+                            new_g
+                        )
+                        this.children.push(leftnode);
+                        this.children.push(rightnode);
+                    }
+                    
+                }
+            }
+            // Algorithm
+            async function setup() {
+                await main();
+            }
+            async function main(){
+                let root = new Node(CANVAS_WIDTH / 2, CANVAS_HEIGHT - DENSITY + 50, STARTRAD,1, getRandomInt(80,180), getRandomInt(80,180), getRandomInt(80,180));
+                make_children(root);
+
+                createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+                background(color(BACKGROUND_COLOR));
+
+                draw_node(root);
+                
+            }
+            function make_children(node){
+                if (node.d < LAYERS){
+                    node.CreateChildren();
+                    if (node.children[0]){
+                        make_children(node.children[0]);
+                    }
+                    if (node.children[1]){
+                        make_children(node.children[1]);
+                    }
+                }
+            }
+            function draw_node(node){
+                
+                
+
+                fill(node.r, node.g, node.b);
+                stroke(255, 255,255);
+                strokeWeight(0.1);
+                //noStroke();
+                ellipse(node.x, node.y, node.width, node.height);
+
+                if (node.children[0]){
+                    draw_node(node.children[0]);
+                }
+                if (node.children[1]){
+                    draw_node(node.children[1]);
+                }
+            } 
+
+            function getRandomInt(min, max) {
+                min = Math.ceil(min);
+                max = Math.floor(max);
+                return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+            }
+        </script>
+    </body>
+</html>
