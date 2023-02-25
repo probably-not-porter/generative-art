@@ -72,3 +72,63 @@
         </script>
     </body>
 </html>
+
+
+<!-- let canvasWidth = 800;
+let canvasHeight = 800;
+let noiseScale = 0.03; // Controls the density of the clouds
+let maxRadius = 40; // Maximum radius of cloud shapes
+let minRadius = 5; // Minimum radius of cloud shapes
+let lineWeight = 2; // Weight of the lines connecting each point
+let lineAlpha = 150; // Maximum transparency of the lines connecting each point
+
+function setup() {
+  createCanvas(canvasWidth, canvasHeight);
+  noLoop(); // Run draw() only once
+}
+
+function draw() {
+  background(0); // Black background
+  // Create a blue and orange gradient background with cloud shapes
+  let c1 = color(255, 165, 0); // Orange
+  let c2 = color(0, 0, 255); // Blue
+  let clouds = setCloudyGradient(0, 0, canvasWidth, canvasHeight, c1, c2);
+
+  // Draw white lines connecting each point to every other point
+  strokeWeight(lineWeight);
+  minimpact = 300;
+  maximpact = 0;
+  for (let i = 0; i < clouds.length; i++) {
+    for (let j = i + 1; j < clouds.length; j++) {
+      let weight = (blue(clouds[i][2]) + blue(clouds[j][2])) / 2; // 0 to 255
+      let impact = 255 - weight*2;
+      if (impact < 0) {impact = 0;}
+      if (impact > maximpact)(maximpact = impact);
+      if (impact < minimpact)(minimpact = impact);
+      if (impact > 155){
+        stroke(255,255,255, impact*2 - 250);
+        line(clouds[i][0], clouds[i][1], clouds[j][0], clouds[j][1]);
+      }
+      
+      
+    }
+  }
+}
+
+function setCloudyGradient(x, y, w, h, c1, c2) {
+  let clouds = [];
+  noStroke();
+  for (let i = y; i <= y + h; i += maxRadius) {
+    for (let j = x; j <= x + w; j += maxRadius) {
+      let noiseVal = noise(i * noiseScale, j * noiseScale, frameCount * noiseScale); // Generate noise value
+      let radius = map(noiseVal, 0, 1, minRadius, maxRadius); // Map noise value to cloud shape radius
+      let inter = map(radius, minRadius, maxRadius, 0, 1); // Map radius to color gradient
+      let c = lerpColor(c1, c2, inter);
+      let alpha = map(radius, minRadius, maxRadius, 30, 150); // Map radius to transparency
+      fill(red(c), green(c), blue(c), 255);
+      ellipse(j, i, radius, radius);
+      clouds.push([j, i, c, alpha]);
+    }
+  }
+  return clouds;
+} -->
